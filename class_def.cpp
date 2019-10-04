@@ -1,6 +1,4 @@
-#include <iostream>
 #include "class.h"
-using namespace std;
 
 ////////////////////////////////////////////////////////////////////
 /*
@@ -26,7 +24,7 @@ void playing_space::print_real_space(){
     for (int i = 0; i < row; ++i)
     {        
         for (int j = 0; j < col; ++j)
-            cout << space[i][j];
+            cout << space[i][j] << ' ';
         cout << endl;
     }
 }
@@ -80,7 +78,7 @@ void playing_space::print(){
     for (int i = 4; i < row; ++i)
     {        
         for (int j = 0; j < col; ++j)
-            cout << space[i][j];
+            cout << space[i][j] << ' ';
         cout << endl;
     }
 }

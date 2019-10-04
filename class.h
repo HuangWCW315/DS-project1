@@ -1,6 +1,9 @@
 #ifndef CLASS_H
 #define CLASS_H
 
+#include <iostream>
+using namespace  std;
+
 class playing_space{
     private:
         bool **space;        // playing space
