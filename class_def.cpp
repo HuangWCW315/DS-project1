@@ -24,7 +24,7 @@ void playing_space::print_real_space(){
     for (int i = 0; i < row; ++i)
     {        
         for (int j = 0; j < col; ++j)
-            cout << space[i][j] << ' ';
+            cout << space[i][j];
         cout << endl;
     }
 }
@@ -62,8 +62,9 @@ bool playing_space::delete_check(int read_row){
     else return false;
 }
 
-void playing_space::delete_row(int row_deleted){
-    if (delete_check(row_deleted))
+bool playing_space::delete_row(int row_deleted){
+    bool delete_done = false;
+    if (delete_done = delete_check(row_deleted))
     {
         for (int i  = row_deleted; i >= 1; --i)
             for (int j = 0; j < col; ++j)
@@ -71,14 +72,14 @@ void playing_space::delete_row(int row_deleted){
     }
     for (int i = 0; i < col; ++i)
         space[0][i] = false;
-    return;
+    return delete_done;
 }
 
 void playing_space::print(){
     for (int i = 4; i < row; ++i)
     {        
         for (int j = 0; j < col; ++j)
-            cout << space[i][j] << ' ';
+            cout << space[i][j];
         cout << endl;
     }
 }

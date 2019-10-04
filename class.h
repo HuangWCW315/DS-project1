@@ -17,7 +17,7 @@ class playing_space{
         void print_real_space();
         void drop(class block &d_b);
         bool delete_check(int read_row);
-        void delete_row(int row_deleted);
+        bool delete_row(int row_deleted);
         bool check_over();
 };
 

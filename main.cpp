@@ -45,8 +45,11 @@ int main()
                 B = new O_block(begin);       
 
             space.drop(*B);
-            for (int j = 0; j < 4; ++j)
-                space.delete_row(B->get_now_row() - j);
+            for (int j = 0, k = 0; j < 4; ++j)
+            {    
+                if (space.delete_row(B->get_now_row() - k));
+                else k++;
+            }
             game_over = space.check_over();
             delete B;
         }
