@@ -22,7 +22,7 @@ playing_space::~playing_space(){
     delete space;
 }
 
-void playing_space::print(){
+void playing_space::print_real_space(){
     for (int i = 0; i < row; ++i)
     {        
         for (int j = 0; j < col; ++j)
@@ -76,16 +76,19 @@ void playing_space::delete_row(int row_deleted){
     return;
 }
 
+void playing_space::print(){
+    for (int i = 4; i < row; ++i)
+    {        
+        for (int j = 0; j < col; ++j)
+            cout << space[i][j];
+        cout << endl;
+    }
+}
 ////////////////////////////////////////////////////////////////////
 /*
     end of the definition of playing_space
 */
 ////////////////////////////////////////////////////////////////////
-
-block::~block(){
-    delete stop_position_height;
-    cout << "deleted!\n";
-}
 
 int block::get_now_row(){
     return now_row;
@@ -93,31 +96,466 @@ int block::get_now_row(){
 
 ////////////////////////////////////////////////////////////////////
 /*
-    start of the definition of T1
+    start of the definition of T_block
 */
 ////////////////////////////////////////////////////////////////////
 
-T1::T1(int initial_place){
+T_block::T_block(int initial_place, int type){
+    
     now_row = 3;
     initial_position= initial_place;
-    stop_size = 3;
-    stop_position_height[0] = 1;
-    stop_position_height[1] = 0;
-    stop_position_height[2] = 1;
-    stop_position_height[3] = -1;
+    
+    if (type == 1)
+    {        
+        stop_size = 3;
+        stop_position_height = new int[stop_size];
+        stop_position_height[0] = 1;
+        stop_position_height[1] = 0;
+        stop_position_height[2] = 1;
 
-    block_position[0][0] = 0;
-    block_position[0][1] = 1;
-    block_position[1][0] = 1;
-    block_position[1][1] = 0;
-    block_position[2][0] = 1;
-    block_position[2][1] = 1;
-    block_position[3][0] = 1; 
-    block_position[3][1] = 2;
+        block_position[0][0] = 0;
+        block_position[0][1] = 1;
+        block_position[1][0] = 1;
+        block_position[1][1] = 0;
+        block_position[2][0] = 1;
+        block_position[2][1] = 1;
+        block_position[3][0] = 1; 
+        block_position[3][1] = 2;
+    }
+    else if (type == 2)
+    {
+        stop_size = 2;
+        stop_position_height = new int[stop_size];
+        stop_position_height[0] = 1;
+        stop_position_height[1] = 0;
+
+        block_position[0][0] = 0;
+        block_position[0][1] = 1;
+        block_position[1][0] = 1;
+        block_position[1][1] = 0;
+        block_position[2][0] = 1;
+        block_position[2][1] = 1;
+        block_position[3][0] = 2; 
+        block_position[3][1] = 1;
+    }
+    else if (type == 3)
+    {
+        stop_size = 3;
+        stop_position_height = new int[stop_size];
+        stop_position_height[0] = 0;
+        stop_position_height[1] = 0;
+        stop_position_height[2] = 0;
+
+        block_position[0][0] = 0;
+        block_position[0][1] = 0;
+        block_position[1][0] = 0;
+        block_position[1][1] = 1;
+        block_position[2][0] = 0;
+        block_position[2][1] = 2;
+        block_position[3][0] = 1; 
+        block_position[3][1] = 1;
+    }
+    else if (type == 4)
+    {
+        stop_size = 2;
+        stop_position_height = new int[stop_size];
+        stop_position_height[0] = 0;
+        stop_position_height[1] = 1;
+
+        block_position[0][0] = 0;
+        block_position[0][1] = 0;
+        block_position[1][0] = 1;
+        block_position[1][1] = 0;
+        block_position[2][0] = 1;
+        block_position[2][1] = 1;
+        block_position[3][0] = 2; 
+        block_position[3][1] = 0;
+    }
+    else cout << "invalid input!!" << endl;
+
 }
+T_block::~T_block(){delete stop_position_height;}
+////////////////////////////////////////////////////////////////////
+/*
+    end of the definition of T_block
+*/
+////////////////////////////////////////////////////////////////////
+
+
 
 ////////////////////////////////////////////////////////////////////
 /*
-    end of the definition of T1
+    start of the definition of L_block
+*/
+////////////////////////////////////////////////////////////////////
+
+L_block::L_block(int initial_place, int type){
+    
+    now_row = 3;
+    initial_position= initial_place;
+    
+    if (type == 1)
+    {        
+        stop_size = 2;
+        stop_position_height = new int[stop_size];
+        stop_position_height[0] = 0;
+        stop_position_height[1] = 0;
+
+        block_position[0][0] = 0;
+        block_position[0][1] = 0;
+        block_position[1][0] = 0;
+        block_position[1][1] = 1;
+        block_position[2][0] = 1;
+        block_position[2][1] = 0;
+        block_position[3][0] = 2; 
+        block_position[3][1] = 0;
+    }
+    else if (type == 2)
+    {
+        stop_size = 3;
+        stop_position_height = new int[stop_size];
+        stop_position_height[0] = 0;
+        stop_position_height[1] = 1;
+        stop_position_height[2] = 1;
+
+        block_position[0][0] = 0;
+        block_position[0][1] = 0;
+        block_position[1][0] = 1;
+        block_position[1][1] = 0;
+        block_position[2][0] = 1;
+        block_position[2][1] = 1;
+        block_position[3][0] = 1; 
+        block_position[3][1] = 2;
+    }
+    else if (type == 3)
+    {
+        stop_size = 2;
+        stop_position_height = new int[stop_size];
+        stop_position_height[0] = 2;
+        stop_position_height[1] = 0;
+
+        block_position[0][0] = 0;
+        block_position[0][1] = 1;
+        block_position[1][0] = 1;
+        block_position[1][1] = 1;
+        block_position[2][0] = 2;
+        block_position[2][1] = 0;
+        block_position[3][0] = 2; 
+        block_position[3][1] = 1;
+    }
+    else if (type == 4)
+    {
+        stop_size = 3;
+        stop_position_height = new int[stop_size];
+        stop_position_height[0] = 0;
+        stop_position_height[1] = 0;
+        stop_position_height[2] = 0;
+
+        block_position[0][0] = 0;
+        block_position[0][1] = 0;
+        block_position[1][0] = 0;
+        block_position[1][1] = 1;
+        block_position[2][0] = 0;
+        block_position[2][1] = 2;
+        block_position[3][0] = 1; 
+        block_position[3][1] = 2;
+    }
+    else cout << "invalid input!!" << endl;
+
+}
+L_block::~L_block(){delete stop_position_height;}
+////////////////////////////////////////////////////////////////////
+/*
+    end of the definition of L_block
+*/
+////////////////////////////////////////////////////////////////////
+
+
+
+////////////////////////////////////////////////////////////////////
+/*
+    start of the definition of J_block
+*/
+////////////////////////////////////////////////////////////////////
+
+J_block::J_block(int initial_place, int type){
+    
+    now_row = 3;
+    initial_position= initial_place;
+    
+    if (type == 1)
+    {        
+        stop_size = 2;
+        stop_position_height = new int[stop_size];
+        stop_position_height[0] = 0;
+        stop_position_height[1] = 0;
+
+        block_position[0][0] = 0;
+        block_position[0][1] = 0;
+        block_position[1][0] = 0;
+        block_position[1][1] = 1;
+        block_position[2][0] = 1;
+        block_position[2][1] = 1;
+        block_position[3][0] = 2; 
+        block_position[3][1] = 1;
+    }
+    else if (type == 2)
+    {
+        stop_size = 3;
+        stop_position_height = new int[stop_size];
+        stop_position_height[0] = 0;
+        stop_position_height[1] = 0;
+        stop_position_height[2] = 0;
+
+        block_position[0][0] = 0;
+        block_position[0][1] = 0;
+        block_position[1][0] = 0;
+        block_position[1][1] = 1;
+        block_position[2][0] = 0;
+        block_position[2][1] = 2;
+        block_position[3][0] = 1; 
+        block_position[3][1] = 0;
+    }
+    else if (type == 3)
+    {
+        stop_size = 2;
+        stop_position_height = new int[stop_size];
+        stop_position_height[0] = 0;
+        stop_position_height[1] = 2;
+
+        block_position[0][0] = 0;
+        block_position[0][1] = 0;
+        block_position[1][0] = 1;
+        block_position[1][1] = 0;
+        block_position[2][0] = 2;
+        block_position[2][1] = 0;
+        block_position[3][0] = 2; 
+        block_position[3][1] = 1;
+    }
+    else if (type == 4)
+    {
+        stop_size = 3;
+        stop_position_height = new int[stop_size];
+        stop_position_height[0] = 1;
+        stop_position_height[1] = 1;
+        stop_position_height[2] = 0;
+
+        block_position[0][0] = 0;
+        block_position[0][1] = 2;
+        block_position[1][0] = 1;
+        block_position[1][1] = 0;
+        block_position[2][0] = 1;
+        block_position[2][1] = 1;
+        block_position[3][0] = 1; 
+        block_position[3][1] = 2;
+    }
+    else cout << "invalid input!!" << endl;
+
+}
+J_block::~J_block(){delete stop_position_height;}
+////////////////////////////////////////////////////////////////////
+/*
+    end of the definition of J_block
+*/
+////////////////////////////////////////////////////////////////////
+
+
+
+////////////////////////////////////////////////////////////////////
+/*
+    start of the definition of S_block
+*/
+////////////////////////////////////////////////////////////////////
+
+S_block::S_block(int initial_place, int type){
+    
+    now_row = 3;
+    initial_position= initial_place;
+    
+    if (type == 1)
+    {        
+        stop_size = 3;
+        stop_position_height = new int[stop_size];
+        stop_position_height[0] = 0;
+        stop_position_height[1] = 0;
+        stop_position_height[2] = 1;
+
+        block_position[0][0] = 0;
+        block_position[0][1] = 0;
+        block_position[1][0] = 0;
+        block_position[1][1] = 1;
+        block_position[2][0] = 1;
+        block_position[2][1] = 1;
+        block_position[3][0] = 1; 
+        block_position[3][1] = 2;
+    }
+    else if (type == 2)
+    {
+        stop_size = 2;
+        stop_position_height = new int[stop_size];
+        stop_position_height[0] = 1;
+        stop_position_height[1] = 0;
+
+        block_position[0][0] = 0;
+        block_position[0][1] = 1;
+        block_position[1][0] = 1;
+        block_position[1][1] = 0;
+        block_position[2][0] = 1;
+        block_position[2][1] = 1;
+        block_position[3][0] = 2; 
+        block_position[3][1] = 0;
+    }
+    else cout << "invalid input!!" << endl;
+
+}
+S_block::~S_block(){delete stop_position_height;}
+////////////////////////////////////////////////////////////////////
+/*
+    end of the definition of S_block
+*/
+////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////////////
+/*
+    start of the definition of Z_block
+*/
+////////////////////////////////////////////////////////////////////
+
+Z_block::Z_block(int initial_place, int type){
+    
+    now_row = 3;
+    initial_position= initial_place;
+    
+    if (type == 1)
+    {        
+        stop_size = 3;
+        stop_position_height = new int[stop_size];
+        stop_position_height[0] = 1;
+        stop_position_height[1] = 0;
+        stop_position_height[2] = 0;
+
+        block_position[0][0] = 0;
+        block_position[0][1] = 1;
+        block_position[1][0] = 0;
+        block_position[1][1] = 2;
+        block_position[2][0] = 1;
+        block_position[2][1] = 0;
+        block_position[3][0] = 1; 
+        block_position[3][1] = 1;
+    }
+    else if (type == 2)
+    {
+        stop_size = 2;
+        stop_position_height = new int[stop_size];
+        stop_position_height[0] = 0;
+        stop_position_height[1] = 1;
+
+        block_position[0][0] = 0;
+        block_position[0][1] = 0;
+        block_position[1][0] = 1;
+        block_position[1][1] = 0;
+        block_position[2][0] = 1;
+        block_position[2][1] = 1;
+        block_position[3][0] = 2; 
+        block_position[3][1] = 1;
+    }
+    else cout << "invalid input!!" << endl;
+
+}
+Z_block::~Z_block(){delete stop_position_height;}
+////////////////////////////////////////////////////////////////////
+/*
+    end of the definition of Z_block
+*/
+////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////////////
+/*
+    start of the definition of I_block
+*/
+////////////////////////////////////////////////////////////////////
+
+I_block::I_block(int initial_place, int type){
+    
+    now_row = 3;
+    initial_position= initial_place;
+    
+    if (type == 1)
+    {        
+        stop_size = 1;
+        stop_position_height = new int[stop_size];
+        stop_position_height[0] = 0;
+
+        block_position[0][0] = 0;
+        block_position[0][1] = 0;
+        block_position[1][0] = 1;
+        block_position[1][1] = 0;
+        block_position[2][0] = 2;
+        block_position[2][1] = 0;
+        block_position[3][0] = 3; 
+        block_position[3][1] = 0;
+    }
+    else if (type == 2)
+    {
+        stop_size = 4;
+        stop_position_height = new int[stop_size];
+        stop_position_height[0] = 0;
+        stop_position_height[1] = 0;
+        stop_position_height[2] = 0;
+        stop_position_height[3] = 0;
+
+        block_position[0][0] = 0;
+        block_position[0][1] = 0;
+        block_position[1][0] = 0;
+        block_position[1][1] = 1;
+        block_position[2][0] = 0;
+        block_position[2][1] = 2;
+        block_position[3][0] = 0; 
+        block_position[3][1] = 3;
+    }
+    else cout << "invalid input!!" << endl;
+
+}
+I_block::~I_block(){delete stop_position_height;}
+////////////////////////////////////////////////////////////////////
+/*
+    end of the definition of I_block
+*/
+////////////////////////////////////////////////////////////////////
+
+
+
+////////////////////////////////////////////////////////////////////
+/*
+    start of the definition of O_block
+*/
+////////////////////////////////////////////////////////////////////
+
+O_block::O_block(int initial_place){
+    
+    now_row = 3;
+    initial_position= initial_place;
+
+    stop_size = 2;
+    stop_position_height = new int[stop_size];
+    stop_position_height[0] = 0;
+    stop_position_height[1] = 0;
+
+    block_position[0][0] = 0;
+    block_position[0][1] = 0;
+    block_position[1][0] = 0;
+    block_position[1][1] = 1;
+    block_position[2][0] = 1;
+    block_position[2][1] = 0;
+    block_position[3][0] = 1; 
+    block_position[3][1] = 1;
+
+}
+O_block::~O_block(){delete stop_position_height;}
+////////////////////////////////////////////////////////////////////
+/*
+    end of the definition of O_block
 */
 ////////////////////////////////////////////////////////////////////
