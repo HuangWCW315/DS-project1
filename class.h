@@ -11,7 +11,10 @@ class playing_space{
         playing_space(int ROW, int COL);      // initializing space
         ~playing_space();
         void print();
-        bool drop(class block &d_b);
+        void drop(class block &d_b);
+        bool delete_check(int read_row);
+        void delete_row(int row_deleted);
+        bool check_over();
 };
 
 class block{
@@ -28,6 +31,7 @@ class block{
         int initial_position;
     public:
     ~block();
+    int get_now_row();
 };
 
 class T1:public block{

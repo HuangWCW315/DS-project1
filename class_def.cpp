@@ -7,11 +7,11 @@ using namespace std;
     start of the definition of playing_space
 */
 ////////////////////////////////////////////////////////////////////
-playing_space::playing_space(int ROW, int COL):row(ROW), col(COL){
-    space = new bool*[ROW];
-    for (int i = 0; i < ROW; ++i)
+playing_space::playing_space(int ROW, int COL):row(ROW + 4), col(COL){
+    space = new bool*[row];
+    for (int i = 0; i < row; ++i)
         space[i] = new bool[COL];
-    for (int i = 0; i < ROW; ++i)
+    for (int i = 0; i < row; ++i)
         for (int j = 0; j < COL; ++j)
             space[i][j] = 0;
 }
@@ -31,23 +31,49 @@ void playing_space::print(){
     }
 }
 
-bool playing_space::drop(block &d_b){
+void playing_space::drop(block &d_b){
     bool stop = false;
-    for (int i = 0; (i < row - 1) && (!stop); i++)
+    for (int i = d_b.now_row; (i < row - 1) && (!stop); i++)
     { 
         for (int j = 0; (j < d_b.stop_size) && (!stop); ++j)
         {
-            if (space[d_b.now_row - d_b.stop_position_height[j] + 1][d_b.initial_position + j])
+            if (space[i - d_b.stop_position_height[j] + 1][d_b.initial_position + j])
                 stop = true;
         }
         if (!stop) d_b.now_row++;
     }
     for (int i = 0; i < 4; ++i)
-        if (d_b.now_row - d_b.block_position[i][0] < 0);
-        else
-            space[d_b.now_row - d_b.block_position[i][0]][d_b.initial_position + d_b.block_position[i][1]] = true;
-    if (d_b.now_row <= 1) return false;
-    return true;
+        space[d_b.now_row - d_b.block_position[i][0]][d_b.initial_position + d_b.block_position[i][1]] = true;
+
+}
+
+bool playing_space::check_over(){
+    for (int i = 0; i < 4; ++i)
+        for (int j = 0; j < col; ++j)
+            if (space[i][j]) return true;
+    return false;
+}
+
+bool playing_space::delete_check(int read_row){
+    int sum = 0;
+    for (int i = 0; i < col; ++i)
+    {
+        sum += space[read_row][i];
+    }
+    if (sum == col) return true;
+    else return false;
+}
+
+void playing_space::delete_row(int row_deleted){
+    if (delete_check(row_deleted))
+    {
+        for (int i  = row_deleted; i >= 1; --i)
+            for (int j = 0; j < col; ++j)
+                space[i][j] = space[i - 1][j];
+    }
+    for (int i = 0; i < col; ++i)
+        space[0][i] = false;
+    return;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -61,6 +87,10 @@ block::~block(){
     cout << "deleted!\n";
 }
 
+int block::get_now_row(){
+    return now_row;
+}
+
 ////////////////////////////////////////////////////////////////////
 /*
     start of the definition of T1
@@ -68,7 +98,7 @@ block::~block(){
 ////////////////////////////////////////////////////////////////////
 
 T1::T1(int initial_place){
-    now_row = 0;
+    now_row = 3;
     initial_position= initial_place;
     stop_size = 3;
     stop_position_height[0] = 1;

@@ -4,17 +4,23 @@ using namespace  std;
 
 int main()
 {
-    playing_space space(19, 15);
+    playing_space space(5, 6);
     space.print();
-    bool flag = true;
-    for (int i = 0; i < 10 && flag; i++)
-{    
-    block *T = new T1(3);
-    flag = space.drop(*T);
-    delete T;
-        }
+    bool game_over = false;
+    int arr[] = {0,3,0,3,0,3,0,3,0,3};
+
+    for (int i = 0; i < 10 && !game_over; i++)
+    {    
+        block *T = new T1(arr[i]);
+        space.drop(*T);
+        for (int j = 0; j < 4; ++j)
+            space.delete_row(T->get_now_row() - j);
+        game_over = space.check_over();
+        delete T;
+    space.print();
+    }
     
-space.print();
-if (!flag) cout << "Game over!!" << endl;
+    if (game_over) cout << "Game over!!" << endl;
+
     return 0;
 }
