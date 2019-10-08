@@ -6,6 +6,7 @@
 int main()
 {
     int row, col;
+    
     cin >> row >> col;
     playing_space space(row, col);
 
@@ -42,9 +43,8 @@ int main()
                 B = new Z_block(begin, type_number); 
             else if (type == 'I')
                 B = new I_block(begin, type_number); 
-            else 
-                B = new O_block(begin);       
-
+            else
+                B = new O_block(begin);
             space.drop(*B);
             for (int j = 0, k = 0; j < 4; ++j)
             {    
@@ -58,8 +58,6 @@ int main()
         if (!game_over) cin >> ch;
     }
     space.print();
-    if (game_over) cout << "End with out of range!\n";
-
 
     return 0;
 }

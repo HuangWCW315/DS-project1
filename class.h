@@ -25,8 +25,8 @@ class block{
     friend playing_space;
     protected:
         int stop_size;
-        int *stop_position_height;  
-            // when stop_position_height[i] = 1, it means the the block itselt
+        int *lowest_block_position;  
+            // when lowest_block_position[i] = 1, it means the the block itselt
             // is at the second row regarding the row of reference point is row 1, and i means
             // i colume far from the reference point
         int block_position[4][2];     // block exact position

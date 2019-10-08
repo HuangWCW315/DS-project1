@@ -20,22 +20,13 @@ playing_space::~playing_space(){
     delete space;
 }
 
-void playing_space::print_real_space(){
-    for (int i = 0; i < row; ++i)
-    {        
-        for (int j = 0; j < col; ++j)
-            cout << space[i][j];
-        cout << endl;
-    }
-}
-
 void playing_space::drop(block &d_b){
     bool stop = false;
     for (int i = d_b.now_row; (i < row - 1) && (!stop); i++)
     { 
         for (int j = 0; (j < d_b.stop_size) && (!stop); ++j)
         {
-            if (space[i - d_b.stop_position_height[j] + 1][d_b.initial_position + j])
+            if (space[i - d_b.lowest_block_position[j] + 1][d_b.initial_position + j])
                 stop = true;
         }
         if (!stop) d_b.now_row++;
@@ -81,6 +72,13 @@ void playing_space::print(){
     char *arr;
     arr = new char[col + 1];
     file.open("tetris.final",  ios::out | ios::trunc);
+
+    if (!file.is_open()) 
+    {
+        cout << "close file fails!\n";
+        return;
+    }
+
     for (int i = 4; i < row; ++i)
     {        
         for (int j = 0; j < col; ++j)
@@ -96,14 +94,6 @@ void playing_space::print(){
     file.close();
     if (file.is_open()) cout << "close file fails!\n";
 
-   /* 
-    for (int i = 4; i < row; ++i)
-    {        
-        for (int j = 0; j < col; ++j)
-            cout << space[i][j];
-        cout << endl;
-    }
-*/
 }
 ////////////////////////////////////////////////////////////////////
 /*
@@ -129,10 +119,10 @@ T_block::T_block(int initial_place, int type){
     if (type == 1)
     {        
         stop_size = 3;
-        stop_position_height = new int[stop_size];
-        stop_position_height[0] = 1;
-        stop_position_height[1] = 0;
-        stop_position_height[2] = 1;
+        lowest_block_position = new int[stop_size];
+        lowest_block_position[0] = 1;
+        lowest_block_position[1] = 0;
+        lowest_block_position[2] = 1;
 
         block_position[0][0] = 0;
         block_position[0][1] = 1;
@@ -146,9 +136,9 @@ T_block::T_block(int initial_place, int type){
     else if (type == 2)
     {
         stop_size = 2;
-        stop_position_height = new int[stop_size];
-        stop_position_height[0] = 1;
-        stop_position_height[1] = 0;
+        lowest_block_position = new int[stop_size];
+        lowest_block_position[0] = 1;
+        lowest_block_position[1] = 0;
 
         block_position[0][0] = 0;
         block_position[0][1] = 1;
@@ -162,10 +152,10 @@ T_block::T_block(int initial_place, int type){
     else if (type == 3)
     {
         stop_size = 3;
-        stop_position_height = new int[stop_size];
-        stop_position_height[0] = 0;
-        stop_position_height[1] = 0;
-        stop_position_height[2] = 0;
+        lowest_block_position = new int[stop_size];
+        lowest_block_position[0] = 0;
+        lowest_block_position[1] = 0;
+        lowest_block_position[2] = 0;
 
         block_position[0][0] = 0;
         block_position[0][1] = 0;
@@ -179,9 +169,9 @@ T_block::T_block(int initial_place, int type){
     else if (type == 4)
     {
         stop_size = 2;
-        stop_position_height = new int[stop_size];
-        stop_position_height[0] = 0;
-        stop_position_height[1] = 1;
+        lowest_block_position = new int[stop_size];
+        lowest_block_position[0] = 0;
+        lowest_block_position[1] = 1;
 
         block_position[0][0] = 0;
         block_position[0][1] = 0;
@@ -195,7 +185,7 @@ T_block::T_block(int initial_place, int type){
     else cout << "invalid input!!" << endl;
 
 }
-T_block::~T_block(){delete stop_position_height;}
+T_block::~T_block(){delete lowest_block_position;}
 ////////////////////////////////////////////////////////////////////
 /*
     end of the definition of T_block
@@ -218,9 +208,9 @@ L_block::L_block(int initial_place, int type){
     if (type == 1)
     {        
         stop_size = 2;
-        stop_position_height = new int[stop_size];
-        stop_position_height[0] = 0;
-        stop_position_height[1] = 0;
+        lowest_block_position = new int[stop_size];
+        lowest_block_position[0] = 0;
+        lowest_block_position[1] = 0;
 
         block_position[0][0] = 0;
         block_position[0][1] = 0;
@@ -234,10 +224,10 @@ L_block::L_block(int initial_place, int type){
     else if (type == 2)
     {
         stop_size = 3;
-        stop_position_height = new int[stop_size];
-        stop_position_height[0] = 0;
-        stop_position_height[1] = 1;
-        stop_position_height[2] = 1;
+        lowest_block_position = new int[stop_size];
+        lowest_block_position[0] = 0;
+        lowest_block_position[1] = 1;
+        lowest_block_position[2] = 1;
 
         block_position[0][0] = 0;
         block_position[0][1] = 0;
@@ -251,9 +241,9 @@ L_block::L_block(int initial_place, int type){
     else if (type == 3)
     {
         stop_size = 2;
-        stop_position_height = new int[stop_size];
-        stop_position_height[0] = 2;
-        stop_position_height[1] = 0;
+        lowest_block_position = new int[stop_size];
+        lowest_block_position[0] = 2;
+        lowest_block_position[1] = 0;
 
         block_position[0][0] = 0;
         block_position[0][1] = 1;
@@ -267,10 +257,10 @@ L_block::L_block(int initial_place, int type){
     else if (type == 4)
     {
         stop_size = 3;
-        stop_position_height = new int[stop_size];
-        stop_position_height[0] = 0;
-        stop_position_height[1] = 0;
-        stop_position_height[2] = 0;
+        lowest_block_position = new int[stop_size];
+        lowest_block_position[0] = 0;
+        lowest_block_position[1] = 0;
+        lowest_block_position[2] = 0;
 
         block_position[0][0] = 0;
         block_position[0][1] = 0;
@@ -284,7 +274,7 @@ L_block::L_block(int initial_place, int type){
     else cout << "invalid input!!" << endl;
 
 }
-L_block::~L_block(){delete stop_position_height;}
+L_block::~L_block(){delete lowest_block_position;}
 ////////////////////////////////////////////////////////////////////
 /*
     end of the definition of L_block
@@ -307,9 +297,9 @@ J_block::J_block(int initial_place, int type){
     if (type == 1)
     {        
         stop_size = 2;
-        stop_position_height = new int[stop_size];
-        stop_position_height[0] = 0;
-        stop_position_height[1] = 0;
+        lowest_block_position = new int[stop_size];
+        lowest_block_position[0] = 0;
+        lowest_block_position[1] = 0;
 
         block_position[0][0] = 0;
         block_position[0][1] = 0;
@@ -323,10 +313,10 @@ J_block::J_block(int initial_place, int type){
     else if (type == 2)
     {
         stop_size = 3;
-        stop_position_height = new int[stop_size];
-        stop_position_height[0] = 0;
-        stop_position_height[1] = 0;
-        stop_position_height[2] = 0;
+        lowest_block_position = new int[stop_size];
+        lowest_block_position[0] = 0;
+        lowest_block_position[1] = 0;
+        lowest_block_position[2] = 0;
 
         block_position[0][0] = 0;
         block_position[0][1] = 0;
@@ -340,9 +330,9 @@ J_block::J_block(int initial_place, int type){
     else if (type == 3)
     {
         stop_size = 2;
-        stop_position_height = new int[stop_size];
-        stop_position_height[0] = 0;
-        stop_position_height[1] = 2;
+        lowest_block_position = new int[stop_size];
+        lowest_block_position[0] = 0;
+        lowest_block_position[1] = 2;
 
         block_position[0][0] = 0;
         block_position[0][1] = 0;
@@ -356,10 +346,10 @@ J_block::J_block(int initial_place, int type){
     else if (type == 4)
     {
         stop_size = 3;
-        stop_position_height = new int[stop_size];
-        stop_position_height[0] = 1;
-        stop_position_height[1] = 1;
-        stop_position_height[2] = 0;
+        lowest_block_position = new int[stop_size];
+        lowest_block_position[0] = 1;
+        lowest_block_position[1] = 1;
+        lowest_block_position[2] = 0;
 
         block_position[0][0] = 0;
         block_position[0][1] = 2;
@@ -373,7 +363,7 @@ J_block::J_block(int initial_place, int type){
     else cout << "invalid input!!" << endl;
 
 }
-J_block::~J_block(){delete stop_position_height;}
+J_block::~J_block(){delete lowest_block_position;}
 ////////////////////////////////////////////////////////////////////
 /*
     end of the definition of J_block
@@ -396,10 +386,10 @@ S_block::S_block(int initial_place, int type){
     if (type == 1)
     {        
         stop_size = 3;
-        stop_position_height = new int[stop_size];
-        stop_position_height[0] = 0;
-        stop_position_height[1] = 0;
-        stop_position_height[2] = 1;
+        lowest_block_position = new int[stop_size];
+        lowest_block_position[0] = 0;
+        lowest_block_position[1] = 0;
+        lowest_block_position[2] = 1;
 
         block_position[0][0] = 0;
         block_position[0][1] = 0;
@@ -413,9 +403,9 @@ S_block::S_block(int initial_place, int type){
     else if (type == 2)
     {
         stop_size = 2;
-        stop_position_height = new int[stop_size];
-        stop_position_height[0] = 1;
-        stop_position_height[1] = 0;
+        lowest_block_position = new int[stop_size];
+        lowest_block_position[0] = 1;
+        lowest_block_position[1] = 0;
 
         block_position[0][0] = 0;
         block_position[0][1] = 1;
@@ -429,7 +419,7 @@ S_block::S_block(int initial_place, int type){
     else cout << "invalid input!!" << endl;
 
 }
-S_block::~S_block(){delete stop_position_height;}
+S_block::~S_block(){delete lowest_block_position;}
 ////////////////////////////////////////////////////////////////////
 /*
     end of the definition of S_block
@@ -451,10 +441,10 @@ Z_block::Z_block(int initial_place, int type){
     if (type == 1)
     {        
         stop_size = 3;
-        stop_position_height = new int[stop_size];
-        stop_position_height[0] = 1;
-        stop_position_height[1] = 0;
-        stop_position_height[2] = 0;
+        lowest_block_position = new int[stop_size];
+        lowest_block_position[0] = 1;
+        lowest_block_position[1] = 0;
+        lowest_block_position[2] = 0;
 
         block_position[0][0] = 0;
         block_position[0][1] = 1;
@@ -468,9 +458,9 @@ Z_block::Z_block(int initial_place, int type){
     else if (type == 2)
     {
         stop_size = 2;
-        stop_position_height = new int[stop_size];
-        stop_position_height[0] = 0;
-        stop_position_height[1] = 1;
+        lowest_block_position = new int[stop_size];
+        lowest_block_position[0] = 0;
+        lowest_block_position[1] = 1;
 
         block_position[0][0] = 0;
         block_position[0][1] = 0;
@@ -484,7 +474,7 @@ Z_block::Z_block(int initial_place, int type){
     else cout << "invalid input!!" << endl;
 
 }
-Z_block::~Z_block(){delete stop_position_height;}
+Z_block::~Z_block(){delete lowest_block_position;}
 ////////////////////////////////////////////////////////////////////
 /*
     end of the definition of Z_block
@@ -506,8 +496,8 @@ I_block::I_block(int initial_place, int type){
     if (type == 1)
     {        
         stop_size = 1;
-        stop_position_height = new int[stop_size];
-        stop_position_height[0] = 0;
+        lowest_block_position = new int[stop_size];
+        lowest_block_position[0] = 0;
 
         block_position[0][0] = 0;
         block_position[0][1] = 0;
@@ -521,11 +511,11 @@ I_block::I_block(int initial_place, int type){
     else if (type == 2)
     {
         stop_size = 4;
-        stop_position_height = new int[stop_size];
-        stop_position_height[0] = 0;
-        stop_position_height[1] = 0;
-        stop_position_height[2] = 0;
-        stop_position_height[3] = 0;
+        lowest_block_position = new int[stop_size];
+        lowest_block_position[0] = 0;
+        lowest_block_position[1] = 0;
+        lowest_block_position[2] = 0;
+        lowest_block_position[3] = 0;
 
         block_position[0][0] = 0;
         block_position[0][1] = 0;
@@ -539,7 +529,7 @@ I_block::I_block(int initial_place, int type){
     else cout << "invalid input!!" << endl;
 
 }
-I_block::~I_block(){delete stop_position_height;}
+I_block::~I_block(){delete lowest_block_position;}
 ////////////////////////////////////////////////////////////////////
 /*
     end of the definition of I_block
@@ -560,9 +550,9 @@ O_block::O_block(int initial_place){
     initial_position= initial_place;
 
     stop_size = 2;
-    stop_position_height = new int[stop_size];
-    stop_position_height[0] = 0;
-    stop_position_height[1] = 0;
+    lowest_block_position = new int[stop_size];
+    lowest_block_position[0] = 0;
+    lowest_block_position[1] = 0;
 
     block_position[0][0] = 0;
     block_position[0][1] = 0;
@@ -574,7 +564,7 @@ O_block::O_block(int initial_place){
     block_position[3][1] = 1;
 
 }
-O_block::~O_block(){delete stop_position_height;}
+O_block::~O_block(){delete lowest_block_position;}
 ////////////////////////////////////////////////////////////////////
 /*
     end of the definition of O_block
