@@ -1,5 +1,5 @@
 #include "class.h"
-
+#include <fstream>
 ////////////////////////////////////////////////////////////////////
 /*
     start of the definition of playing_space
@@ -76,12 +76,34 @@ bool playing_space::delete_row(int row_deleted){
 }
 
 void playing_space::print(){
+
+    fstream file;
+    char *arr;
+    arr = new char[col + 1];
+    file.open("tetris.final",  ios::out | ios::trunc);
+    for (int i = 4; i < row; ++i)
+    {        
+        for (int j = 0; j < col; ++j)
+        {   
+            if (space[i][j])       
+                arr[j] = '1';
+            else arr[j] = '0';
+        }
+            arr[col] = '\n';
+            file.write(arr, col + 1);
+    }
+    
+    file.close();
+    if (file.is_open()) cout << "close file fails!\n";
+
+   /* 
     for (int i = 4; i < row; ++i)
     {        
         for (int j = 0; j < col; ++j)
             cout << space[i][j];
         cout << endl;
     }
+*/
 }
 ////////////////////////////////////////////////////////////////////
 /*

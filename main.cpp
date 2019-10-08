@@ -1,6 +1,7 @@
 #include "class.h"
 #include <stdlib.h>
 #include <cstring>
+#include <fstream>
 
 int main()
 {
@@ -47,7 +48,7 @@ int main()
             space.drop(*B);
             for (int j = 0, k = 0; j < 4; ++j)
             {    
-                if (space.delete_row(B->get_now_row() - k));
+                if (B->get_now_row() - k >= 4 && space.delete_row(B->get_now_row() - k));
                 else k++;
             }
             game_over = space.check_over();
@@ -57,6 +58,8 @@ int main()
         if (!game_over) cin >> ch;
     }
     space.print();
+    if (game_over) cout << "End with out of range!\n";
+
 
     return 0;
 }
