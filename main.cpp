@@ -6,14 +6,22 @@
 int main()
 {
     int row, col;
-    
-    cin >> row >> col;
+    ifstream file_in;
+
+    file_in.open("tetris.data", ios::in);
+    if (!file_in.is_open())
+    {
+        cout << "Open file fails!\n";
+        return 0;
+    }
+
+    file_in >> row >> col;
     playing_space space(row, col);
 
     char ch[50];
     int begin;
     bool game_over = false;
-    cin >> ch;
+    file_in >> ch;
     while (strcmp(ch, "End") && !game_over)
     {    
         char type;
@@ -25,7 +33,7 @@ int main()
         }
         else type = ch[0];
 
-        cin >> begin;
+        file_in >> begin;
         begin--;
         block *B;
 
@@ -55,9 +63,16 @@ int main()
             delete B;
         }
 
-        if (!game_over) cin >> ch;
+        if (!game_over) file_in >> ch;
     }
     space.print();
+
+    file_in.close();
+    if (file_in.is_open())
+    {
+        cout << "Close file fails!\n";
+        return 0;
+    }
 
     return 0;
 }
