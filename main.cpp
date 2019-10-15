@@ -8,7 +8,7 @@ int main()
     int row, col;
     ifstream file_in;
 
-    file_in.open("tetris.data", ios::in);
+    file_in.open("Tetris.data", ios::in);
     if (!file_in.is_open())
     {
         cout << "Open file fails!\n";
