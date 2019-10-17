@@ -71,7 +71,7 @@ void playing_space::print(){
     fstream file;
     char *arr;
     arr = new char[col + 1];
-    file.open("Tetris.output",  ios::out | ios::trunc);
+    file.open("Tetris.final",  ios::out | ios::trunc);
 
     if (!file.is_open()) 
     {
